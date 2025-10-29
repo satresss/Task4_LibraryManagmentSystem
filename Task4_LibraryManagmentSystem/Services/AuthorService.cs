@@ -12,35 +12,35 @@ namespace Task4_LibraryManagmentSystem.Services
             _authorRepository = authorRepository;
         }
 
-        public List<Author> GetAllAuthors()
+        public async Task<List<Author>> GetAllAuthorsAsync()
         {
-            return _authorRepository.GetAll();
+            return await _authorRepository.GetAllAsync();
         }
 
-        public Author GetAuthorById(int id)
+        public async Task<Author?> GetAuthorByIdAsync(int id)
         {
-            return _authorRepository.GetAuthorById(id);
+            return await _authorRepository.GetAuthorByIdAsync(id);
         }
 
-        public Author AddAuthor(Author author)
+        public async Task<Author> AddAuthorAsync(Author author)
         {
             if (string.IsNullOrWhiteSpace(author.Name))
                 throw new ArgumentException("Имя автора не может быть пустым.");
 
-            return _authorRepository.AddAuthor(author);
+            return await _authorRepository.AddAuthorAsync(author);
         }
 
-        public Author UpdateAuthor(Author author)
+        public async Task<Author> UpdateAuthorAsync(Author author)
         {
             if (string.IsNullOrWhiteSpace(author.Name))
                 throw new ArgumentException("Имя автора не может быть пустым.");
 
-            return _authorRepository.UpdateAuthor(author);
+            return await _authorRepository.UpdateAuthorAsync(author);
         }
 
-        public Author DeleteAuthor(int id)
+        public async Task<Author?> DeleteAuthorAsync(int id)
         {
-            return _authorRepository.DeleteAuthor(id);
+            return await _authorRepository.DeleteAuthorAsync(id);
         }
     }
 }

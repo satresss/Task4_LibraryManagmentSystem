@@ -4,11 +4,11 @@ namespace Task4_LibraryManagmentSystem.Interfaces
 {
     public interface IBookRepository
     {
-        public List<Book> GetAll();
-        public Book GetBookById(int id);
-        public Book AddBook(Book book);
-        public Book UpdateBook(Book book);
-        public Book DeleteBook(int id);
+        public Task<List<Book>> GetAllAsync();
+        public Task<Book?> GetBookByIdAsync(int id);
+        public Task<Book> AddBookAsync(Book book);
+        public Task<Book?> UpdateBookAsync(Book book);
+        public Task<Book?> DeleteBookAsync(int id);
 
     }
 }

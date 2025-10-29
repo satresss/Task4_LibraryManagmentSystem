@@ -17,25 +17,25 @@ namespace Task4_LibraryManagmentSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var books = _bookService.GetAllBooks();
+            var books = await _bookService.GetAllBooksAsync();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            Book book = _bookService.GetBookById(id);
+            var book = await _bookService.GetBookByIdAsync(id);
             return book == null ? NotFound("Книга не найдена") : Ok(book);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] Book book)
+        public async Task<IActionResult> Add([FromBody] Book book)
         {
             try
             {
-                Book added = _bookService.AddBook(book);
+                var added = await _bookService.AddBookAsync(book);
                 return CreatedAtAction(nameof(GetById), new { id = added.Id }, added);
             }
             catch (ArgumentException ex)
@@ -45,14 +45,14 @@ namespace Task4_LibraryManagmentSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Book book)
+        public async Task<IActionResult> Update(int id, [FromBody] Book book)
         {
             if (id != book.Id)
                 return BadRequest("ID не совпадает");
 
             try
             {
-                Book updated = _bookService.UpdateBook(book);
+                var updated = await _bookService.UpdateBookAsync(book);
                 return updated == null ? NotFound("Книга не найдена") : Ok(updated);
             }
             catch (ArgumentException ex)
@@ -62,9 +62,9 @@ namespace Task4_LibraryManagmentSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Book deleted = _bookService.DeleteBook(id);
+            var deleted = await _bookService.DeleteBookAsync(id);
             return deleted == null ? NotFound("Книга не найдена") : NoContent();
         }
     }

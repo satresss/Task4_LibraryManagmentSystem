@@ -17,25 +17,25 @@ namespace Task4_LibraryManagmentSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var authors = _authorService.GetAllAuthors();
+            var authors = await _authorService.GetAllAuthorsAsync();
             return Ok(authors);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            Author author = _authorService.GetAuthorById(id);
+            var author = await _authorService.GetAuthorByIdAsync(id);
             return author == null ? NotFound("Автор не найден") : Ok(author);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] Author author)
+        public async Task<IActionResult> Add([FromBody] Author author)
         {
             try
             {
-                Author added = _authorService.AddAuthor(author);
+                var added = await _authorService.AddAuthorAsync(author);
                 return CreatedAtAction(nameof(GetById), new { id = added.Id }, added);
             }
             catch (ArgumentException ex)
@@ -45,14 +45,14 @@ namespace Task4_LibraryManagmentSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Author author)
+        public async Task<IActionResult> Update(int id, [FromBody] Author author)
         {
             if (id != author.Id)
                 return BadRequest("ID не совпадает");
 
             try
             {
-                Author updated = _authorService.UpdateAuthor(author);
+                var updated = await _authorService.UpdateAuthorAsync(author);
                 return updated == null ? NotFound("Автор не найден") : Ok(updated);
             }
             catch (ArgumentException ex)
@@ -62,9 +62,9 @@ namespace Task4_LibraryManagmentSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Author deleted = _authorService.DeleteAuthor(id);
+            var deleted = await _authorService.DeleteAuthorAsync(id);
             return deleted == null ? NotFound("Автор не найден") : NoContent();
         }
     }

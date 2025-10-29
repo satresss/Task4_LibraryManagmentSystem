@@ -1,59 +1,59 @@
-﻿using Task4_LibraryManagmentSystem.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Task4_LibraryManagmentSystem.Data;
+using Task4_LibraryManagmentSystem.Interfaces;
 using Task4_LibraryManagmentSystem.Models;
 
 namespace Task4_LibraryManagmentSystem.Repositories
 {
     public class AuthorRepository : IAuthorRepository
     {
-        private List<Author> _authorsList;
-        public AuthorRepository(List<Author> authors) 
-        { 
-            _authorsList = authors;
-        }
+        private LibraryContext _context;
 
-        public List<Author> GetAll() 
-        { 
-            return _authorsList;
-        }
-
-        public Author GetAuthorById(int Id) 
+        public AuthorRepository(LibraryContext context)
         {
-            foreach (Author author in _authorsList) 
-            {
-                if (author.Id == Id) 
-                { 
-                    return author;
-                }
-            }
-            return null;
+            _context = context;
         }
 
-        public Author AddAuthor(Author author) 
-        { 
-           _authorsList.Add(author);
+        public async Task<List<Author>> GetAllAsync()
+        {
+            return await _context.Authors
+                .Include(a => a.Books)
+                .ToListAsync();
+        }
+
+        public async Task<Author?> GetAuthorByIdAsync(int id)
+        {
+            return await _context.Authors
+                .Include(a => a.Books)
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<Author> AddAuthorAsync(Author author)
+        {
+            await _context.Authors.AddAsync(author);
+            await _context.SaveChangesAsync();
             return author;
         }
 
-        public Author UpdateAuthor(Author author) 
+        public async Task<Author?> UpdateAuthorAsync(Author author)
         {
-            for (int i = 0; i < _authorsList.Count; i++) 
-            {
-                if (_authorsList[i].Id == author.Id) 
-                { 
-                    _authorsList[i] = author;
-                    return author;
-                }
-            }
-            return null;
+            var existingAuthor = await _context.Authors.FindAsync(author.Id);
+            if (existingAuthor == null) return null;
+
+            existingAuthor.Name = author.Name;
+            existingAuthor.DateOfBirth = author.DateOfBirth;
+
+            await _context.SaveChangesAsync();
+            return existingAuthor;
         }
 
-        public Author DeleteAuthor(int id)
+        public async Task<Author?> DeleteAuthorAsync(int id)
         {
-            var author = _authorsList.Find(a => a.Id == id);
-            if (author != null)
-            {
-                _authorsList.Remove(author);
-            }
+            var author = await _context.Authors.FindAsync(id);
+            if (author == null) return null;
+
+            _context.Authors.Remove(author);
+            await _context.SaveChangesAsync();
             return author;
         }
 

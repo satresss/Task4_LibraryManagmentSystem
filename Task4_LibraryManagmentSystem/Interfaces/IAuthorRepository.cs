@@ -4,11 +4,11 @@ namespace Task4_LibraryManagmentSystem.Interfaces
 {
     public interface IAuthorRepository
     {
-        public List<Author> GetAll();
-        public Author GetAuthorById(int Id);
-        public Author AddAuthor(Author author);
-        public Author UpdateAuthor(Author author);
-        public Author DeleteAuthor(int Id);
+        public Task<List<Author>> GetAllAsync();
+        public Task<Author?> GetAuthorByIdAsync(int id);
+        public Task<Author> AddAuthorAsync(Author author);
+        public Task<Author?> UpdateAuthorAsync(Author author);
+        public Task<Author?> DeleteAuthorAsync(int id);
 
     }
 }

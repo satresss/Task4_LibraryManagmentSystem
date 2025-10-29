@@ -1,54 +1,60 @@
-﻿using Task4_LibraryManagmentSystem.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Task4_LibraryManagmentSystem.Data;
+using Task4_LibraryManagmentSystem.Interfaces;
 using Task4_LibraryManagmentSystem.Models;
 
 namespace Task4_LibraryManagmentSystem.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        private List<Book> _booksList;
-        public BookRepository(List<Book> books)
+        private LibraryContext _context;
+
+        public BookRepository(LibraryContext context)
         {
-            _booksList = books;
+            _context = context;
         }
-        public List<Book> GetAll()
+
+        public async Task<List<Book>> GetAllAsync()
         {
-            return _booksList;
+            return await _context.Books
+                .Include(b => b.Author)
+                .ToListAsync();
         }
-        public Book GetBookById(int id)
+
+        public async Task<Book?> GetBookByIdAsync(int id)
         {
-            foreach (Book book in _booksList)
-            {
-                if (book.Id == id)
-                {
-                    return book;
-                }
-            }
-            return null;
+            return await _context.Books
+                .Include(b => b.Author)
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
-        public Book AddBook(Book book)
+
+        public async Task<Book> AddBookAsync(Book book)
         {
-            _booksList.Add(book);
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync();
             return book;
         }
-        public Book UpdateBook(Book book)
+
+        public async Task<Book?> UpdateBookAsync(Book book)
         {
-            for (int i = 0; i < _booksList.Count; i++)
-            {
-                if (_booksList[i].Id == book.Id)
-                {
-                    _booksList[i] = book;
-                    return book;
-                }
-            }
-            return null;
+            var existingBook = await _context.Books.FindAsync(book.Id);
+            if (existingBook == null) return null;
+
+            existingBook.Title = book.Title;
+            existingBook.PublishedYear = book.PublishedYear;
+            existingBook.AuthorId = book.AuthorId;
+
+            await _context.SaveChangesAsync();
+            return existingBook;
         }
-        public Book DeleteBook(int id)
+
+        public async Task<Book?> DeleteBookAsync(int id)
         {
-            var book = _booksList.Find(b => b.Id == id);
-            if (book != null)
-            {
-                _booksList.Remove(book);
-            }
+            var book = await _context.Books.FindAsync(id);
+            if (book == null) return null;
+
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
             return book;
         }
     }

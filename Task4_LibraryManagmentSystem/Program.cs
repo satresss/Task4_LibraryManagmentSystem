@@ -2,21 +2,22 @@ using Task4_LibraryManagmentSystem.Interfaces;
 using Task4_LibraryManagmentSystem.Models;
 using Task4_LibraryManagmentSystem.Repositories;
 using Task4_LibraryManagmentSystem.Services;
+using Task4_LibraryManagmentSystem.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<LibraryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<List<Author>>();
-builder.Services.AddSingleton<List<Book>>();
-
-builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
-builder.Services.AddSingleton<IBookRepository, BookRepository>();
-
-builder.Services.AddSingleton<IAuthorService, AuthorService>();
-builder.Services.AddSingleton<IBookService, BookService>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
 
@@ -28,6 +29,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
+
 app.Run();

@@ -12,37 +12,35 @@ namespace Task4_LibraryManagmentSystem.Services
             _bookRepository = bookRepository;
         }
 
-        public List<Book> GetAllBooks()
+        public async Task<List<Book>> GetAllBooksAsync()
         {
-            return _bookRepository.GetAll();
+            return await _bookRepository.GetAllAsync();
         }
 
-        public Book GetBookById(int id)
+        public async Task<Book?> GetBookByIdAsync(int id)
         {
-            return _bookRepository.GetBookById(id);
+            return await _bookRepository.GetBookByIdAsync(id);
         }
 
-        public Book AddBook(Book book)
+        public async Task<Book> AddBookAsync(Book book)
         {
             if (string.IsNullOrWhiteSpace(book.Title))
                 throw new ArgumentException("Название книги не может быть пустым.");
 
-            return _bookRepository.AddBook(book);
+            return await _bookRepository.AddBookAsync(book);
         }
 
-        public Book UpdateBook(Book book)
+        public async Task<Book> UpdateBookAsync(Book book)
         {
             if (string.IsNullOrWhiteSpace(book.Title))
                 throw new ArgumentException("Название книги не может быть пустым.");
 
-            var updated = _bookRepository.UpdateBook(book);
-            return updated;
+            return await _bookRepository.UpdateBookAsync(book);
         }
 
-        public Book DeleteBook(int id)
+        public async Task<Book?> DeleteBookAsync(int id)
         {
-            var deleted = _bookRepository.DeleteBook(id);
-            return deleted;
+            return await _bookRepository.DeleteBookAsync(id);
         }
     }
 }

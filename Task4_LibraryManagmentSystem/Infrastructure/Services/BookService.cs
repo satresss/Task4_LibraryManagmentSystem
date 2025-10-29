@@ -1,7 +1,7 @@
-﻿using Task4_LibraryManagmentSystem.Interfaces;
-using Task4_LibraryManagmentSystem.Models;
+﻿using Task4_LibraryManagmentSystem.Domain.Entities;
+using Task4_LibraryManagmentSystem.Domain.Interfaces;
 
-namespace Task4_LibraryManagmentSystem.Services
+namespace Task4_LibraryManagmentSystem.Infrastructure.Services
 {
     public class BookService : IBookService
     {

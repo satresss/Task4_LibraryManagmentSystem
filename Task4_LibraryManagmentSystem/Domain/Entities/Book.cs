@@ -1,4 +1,4 @@
-﻿namespace Task4_LibraryManagmentSystem.Models
+﻿namespace Task4_LibraryManagmentSystem.Domain.Entities
 {
     public class Book
     {

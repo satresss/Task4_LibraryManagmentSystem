@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Task4_LibraryManagmentSystem.Models;
+using Task4_LibraryManagmentSystem.Domain.Entities;
+
 namespace Task4_LibraryManagmentSystem.Data
 {
     public class LibraryContext : DbContext

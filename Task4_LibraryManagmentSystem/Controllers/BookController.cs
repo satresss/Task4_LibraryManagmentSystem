@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task4_LibraryManagmentSystem.Interfaces;
-using Task4_LibraryManagmentSystem.Models;
+using Task4_LibraryManagmentSystem.Domain.Entities;
+using Task4_LibraryManagmentSystem.Domain.Interfaces;
 using Task4_LibraryManagmentSystem.Services;
 
 namespace Task4_LibraryManagmentSystem.Controllers

@@ -1,9 +1,9 @@
-using Task4_LibraryManagmentSystem.Interfaces;
 using Task4_LibraryManagmentSystem.Models;
-using Task4_LibraryManagmentSystem.Repositories;
-using Task4_LibraryManagmentSystem.Services;
 using Task4_LibraryManagmentSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using Task4_LibraryManagmentSystem.Domain.Interfaces;
+using Task4_LibraryManagmentSystem.Infrastructure.Repositories;
+using Task4_LibraryManagmentSystem.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
